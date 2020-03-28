@@ -1,0 +1,1 @@
+Get-Mailbox -Resultsize Unlimited | Select-Object -Expand Property UserPrincipalName | ForEach-Object {Get-InboxRule -Mailbox $_ | Select-Obeject -Property MailboxOwnerID, Name, Enabled, From, Description, RedirectTo, FowardTo}
