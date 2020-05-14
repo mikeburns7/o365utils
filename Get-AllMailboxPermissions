@@ -1,0 +1,1 @@
+Get-EXOMailbox -ResultSize Unlimited | Get-EXOMailboxPermission | Select Identity,User,@{Name="AccessRights";Expression={$_.AccessRights}},IsInherited,Deny,InheritanceType
