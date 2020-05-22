@@ -19,7 +19,7 @@ $csv | ForEach-Object {
     
     ForEach($i in $txtvalues ){
         $i | Add-Member -NotePropertyName DomainName -NotePropertyValue $response.hostname
-        $i | Export-csv c:\users\mike.burns\desktop\spfcheck2.csv  -Append -NoTypeInformation
+        $i | Export-csv <ENTER LOCATION>  -Append -NoTypeInformation
     }
 
 }
