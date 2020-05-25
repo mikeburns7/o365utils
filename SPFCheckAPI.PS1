@@ -7,6 +7,8 @@
 
 $csv = import-csv C:\users\mikeb\desktop\Book1.csv
 $array = @()
+$txt = "txt"
+$mx = "mx"
 $csv | ForEach-Object {
     $Domain = $_.Name
     $url = "https://api.exana.io/dns/"+$domain+"/txt"
@@ -17,19 +19,25 @@ $csv | ForEach-Object {
     
     $response = Invoke-RestMethod -uri $url -Method 'GET'
     $txtvalues = $response.answer.rdata
-    
-       
+    $spfrecord =""
+
     ForEach($obj in $txtvalues ){
        $txtrecord = $obj
+       $txtrecord = $txtrecord -replace '" "', ""
        $txtrecord = $txtrecord.Trim('"')
+       $spfrecord =""
+       if ($txtrecord -match "v=spf1"){
+           $spfrecord = $txtrecord
+       }
        
         $obj = New-Object psobject
         
         $obj | Add-Member -MemberType NoteProperty -Name "DomainName" -Value $Domain
         $obj | Add-Member -MemberType NoteProperty -Name "TXT" -Value $txtrecord
+        $obj | Add-Member -MemberType NoteProperty -Name "SPF" -Value $spfrecord
         $array += $obj
     }
     
 }
-#$array 
+
 $array | export-csv C:\Users\mikeb\Desktop\spf.csv
